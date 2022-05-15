@@ -1,4 +1,5 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace NoName
@@ -6,11 +7,18 @@ namespace NoName
 public class CollectManager : MonoBehaviour
 {
 	#region SerializedFields
+
 	[SerializeField]
 	private GameObject woodPrefab;
 
 	[SerializeField]
 	private int maxWoodCount;
+
+	[SerializeField]
+	private Transform parentWoods;
+
+	[SerializeField]
+	private float offsetY;
 
 	#endregion
 
@@ -18,7 +26,7 @@ public class CollectManager : MonoBehaviour
 	
 	private GameObject[] woods;
 
-	private int currentWoodCount;
+	private int currentWoodCount = 25;
 
 
 	#endregion
@@ -35,16 +43,47 @@ public class CollectManager : MonoBehaviour
 
 		for (int i = 0; i < maxWoodCount; i++)
 		{
-			var wood = Instantiate(woodPrefab, Player.Instance.gameObject.transform.position, Quaternion.identity,Player.Instance.transform);
+			var wood = Instantiate(woodPrefab, new Vector3(parentWoods.position.x, parentWoods.position.y + i * offsetY, parentWoods.position.z), Quaternion.identity, parentWoods);
 			woods[i] = wood;
-			wood.transform.position +=new Vector3(transform.position.x,transform.position.y+i,transform.position.z);
-			wood.SetActive(true);
+			wood.SetActive(false);
+		}
+
+		for (int i = 0; i < currentWoodCount; i++)
+		{
+			woods[i].SetActive(true);
+		}
+	}
+
+	private void Update() 
+	{
+		if(currentWoodCount == 1 && currentWoodCount == 0) return;
+
+		for (int i = 1; i < currentWoodCount; i++)
+		{
+			woods[i].transform.localPosition = Vector3.Lerp(woods[i].transform.localPosition, woods[i - 1].transform.localPosition + offsetY * Vector3.up, (currentWoodCount - i) *.03f);
 		}
 	}
 
 	#endregion
 
 	#region Methods
+
+	#if UNITY_EDITOR
+
+	[Button()]
+    public void Add()
+    {
+        woods[currentWoodCount].SetActive(true);
+		currentWoodCount++;
+    }
+    
+    [Button()]
+    public void Remove()
+    {
+        woods[currentWoodCount-1].SetActive(false);
+		currentWoodCount--;
+    }
+    #endif
 
 	#endregion
 

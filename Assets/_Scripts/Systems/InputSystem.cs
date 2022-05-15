@@ -2,7 +2,7 @@ using System;
 using NoName.Utilities;
 using UnityEngine;
 
-public class InputController : Singleton<InputController>
+public class InputSystem : Singleton<InputSystem>
 {
 
 	#region Actions
@@ -13,7 +13,7 @@ public class InputController : Singleton<InputController>
 
 	#region Unity Methods
 
-	private void Update() 
+	private void FixedUpdate() 
 	{
 		if(Input.touchCount > 0)
 		{

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using NoName.Utilities;
 using UnityEngine;
 
@@ -53,6 +54,16 @@ namespace NoName
 			{
 				Debug.Log("asd");
 			}
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+	        var collectWood = other.GetComponent<ICollectable>();
+	        if (collectWood!=null)
+	        {
+		        CollectManager.Instance.Add();
+		        other.gameObject.SetActive(false);
+	        }
         }
 
         #endregion

@@ -1,10 +1,11 @@
 using System;
 using NaughtyAttributes;
+using NoName.Utilities;
 using UnityEngine;
 
 namespace NoName
 {
-public class CollectManager : MonoBehaviour
+public class CollectManager : Singleton<CollectManager>
 {
 	#region SerializedFields
 
@@ -26,12 +27,14 @@ public class CollectManager : MonoBehaviour
 	
 	private GameObject[] woods;
 
-	private int currentWoodCount = 25;
+	private int currentWoodCount = 0;
 
 
 	#endregion
 
 	#region Props
+
+	public int CurrentWoodCount => currentWoodCount;
 
 	#endregion
 
@@ -67,25 +70,20 @@ public class CollectManager : MonoBehaviour
 	#endregion
 
 	#region Methods
-
-	#if UNITY_EDITOR
-
-	[Button()]
-    public void Add()
+	
+	public void Add()
     {
         woods[currentWoodCount].SetActive(true);
 		currentWoodCount++;
     }
-    
-    [Button()]
+	
     public void Remove()
     {
         woods[currentWoodCount-1].SetActive(false);
 		currentWoodCount--;
     }
-    #endif
-
-	#endregion
+    
+    #endregion
 
 	#region Callbacks
 

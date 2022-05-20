@@ -30,7 +30,6 @@ namespace NoName
 
         private int currentWoodCount = 0;
 
-
         #endregion
 
         #region Props
@@ -43,7 +42,6 @@ namespace NoName
 
         private void Start()
         {
-            Player.Instance.WayOut += OnWayOut;
             woods = new GameObject[maxWoodCount];
             throwedWoods = new GameObject[maxWoodCount];
 
@@ -92,22 +90,33 @@ namespace NoName
             currentWoodCount--;
         }
 
-        #endregion
-
-        #region Callbacks
-        private void OnWayOut()
+        public void WoodAling()
         {
             if (currentWoodCount > 0)
             {
                 throwedWoods[currentWoodCount - 1].transform.position = new Vector3(Player.Instance.transform.position.x,
                 0,
                 Player.Instance.transform.position.z);
+                throwedWoods[currentWoodCount - 1].transform.rotation = Player.Instance.transform.rotation;
                 throwedWoods[currentWoodCount - 1].SetActive(true);
                 Remove();
+            }
+            else if (Player.Instance.State != PlayerState.Fly)
+            {
+                Player.Instance.ChangePlayerState(PlayerState.Fly);
+                Player.Instance.Jump();
+                if (Player.Instance.transform.position.y == 0)
+                {
+                    Player.Instance.gameObject.GetComponent<Rigidbody>().useGravity = false;
+                }
+
             }
 
         }
 
+        #endregion
+
+        #region Callbacks
         #endregion
     }
 }

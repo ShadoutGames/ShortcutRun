@@ -21,7 +21,7 @@ namespace NoName
 
         #region Variables
 
-        private Rigidbody rb;
+        public Rigidbody rb;
         private Transform _transform;
         private float distanceTravelled;
         private float currentSpeed;
@@ -66,7 +66,6 @@ namespace NoName
                     CollectManager.Instance.WoodAling();
                     timer = .1f;
                 }
-                Debug.Log("asd");
             }
         }
 
@@ -114,7 +113,6 @@ namespace NoName
         {
             GameManager.Instance.ChangeGameState(GameState.InGame);
             _transform.Rotate(Vector3.up * touch.deltaPosition.x * turnSpeed);
-            Debug.Log("touch");
         }
 
         private void OnAfterStateChanged(GameState newState)
@@ -131,6 +129,7 @@ namespace NoName
                 case GameState.Win:
                     break;
                 case GameState.Lose:
+                    currentSpeed = 0;
                     break;
             }
 

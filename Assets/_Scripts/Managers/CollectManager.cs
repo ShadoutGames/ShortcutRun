@@ -28,7 +28,7 @@ namespace NoName
         private GameObject[] woods;
         private GameObject[] throwedWoods;
 
-        private int currentWoodCount = 0;
+        private int currentWoodCount = 10;
 
         #endregion
 
@@ -89,7 +89,7 @@ namespace NoName
             woods[currentWoodCount - 1].SetActive(false);
             currentWoodCount--;
         }
-
+        
         public void WoodAling()
         {
             if (currentWoodCount > 0)
@@ -101,16 +101,23 @@ namespace NoName
                 throwedWoods[currentWoodCount - 1].SetActive(true);
                 Remove();
             }
-            else if (Player.Instance.State != PlayerState.Fly)
-            {
-                Player.Instance.ChangePlayerState(PlayerState.Fly);
-                Player.Instance.Jump();
-                if (Player.Instance.transform.position.y == 0)
-                {
-                    Player.Instance.gameObject.GetComponent<Rigidbody>().useGravity = false;
-                }
+            // else if (Player.Instance.State != PlayerState.Fly)
+            // {
+            //     Player.Instance.ChangePlayerState(PlayerState.Fly);
+            //     Player.Instance.Jump();
+            //     if (Player.Instance.transform.position.y == 0)
+            //     {
+            //         Player.Instance.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            //     }
 
+            // }
+            else if (currentWoodCount == 0)
+            {
+                GameManager.Instance.ChangeGameState(GameState.Lose);
+                Player.Instance.rb.isKinematic = true;
+                
             }
+            
 
         }
 

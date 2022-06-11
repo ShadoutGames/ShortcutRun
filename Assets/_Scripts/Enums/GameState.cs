@@ -1,7 +1,8 @@
 public enum GameState
 {
     Starting = 0,
-    InGame = 1,
-    Win = 2,
-    Lose = 3
+    Wait = 1,
+    InGame = 2,
+    Win = 3,
+    Lose = 4
 }

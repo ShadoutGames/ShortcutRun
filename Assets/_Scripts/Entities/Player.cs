@@ -122,9 +122,16 @@ namespace NoName
                 case GameState.Starting:
                     currentSpeed = 0;
                     break;
+                case GameState.Wait:
+                    currentSpeed = 0;
+                    break;
                 case GameState.InGame:
-                    gameObject.GetComponent<Animator>().SetTrigger("OnRun");
-                    currentSpeed = speed;
+                    LeanTween.delayedCall(3f, () =>
+                    {
+                        gameObject.GetComponent<Animator>().SetTrigger("OnRun");
+                        currentSpeed = speed;
+                    });
+
                     break;
                 case GameState.Win:
                     break;

@@ -22,7 +22,7 @@ namespace NoName
         private GameObject ınGamePanel;
 
         [SerializeField]
-        private GameObject finalPanel;
+        private GameObject succesPanel;
 
         [SerializeField]
         private TextMeshProUGUI countDown;
@@ -47,6 +47,7 @@ namespace NoName
         {
             GameManager.AfterStateChanged += OnAfterStateChanged;
             ScoreManager.Instance.ScoreChanged += OnScoreChanged;
+            CloseAllPanel();
         }
 
 
@@ -67,6 +68,7 @@ namespace NoName
         public void GetOnHold()
         {
             GameManager.Instance.ChangeGameState(GameState.Wait);
+            Debug.Log(GameManager.Instance.State);
         }
 
         public void GetCurrenLevel()
@@ -88,7 +90,7 @@ namespace NoName
             startPanel.SetActive(false);
             waitPanel.SetActive(false);
             failPanel.SetActive(false);
-            finalPanel.SetActive(false);
+            succesPanel.SetActive(false);
         }
 
         #endregion
@@ -113,7 +115,7 @@ namespace NoName
                     waitPanel.SetActive(false);
                     break;
                 case GameState.Win:
-                    finalPanel.SetActive(true);
+                    succesPanel.SetActive(true);
                     break;
                 case GameState.Lose:
                     failPanel.SetActive(true);

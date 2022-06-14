@@ -63,6 +63,7 @@ public class Agent : MonoBehaviour
         switch (newState)
         {
             case GameState.Starting:
+                _speed = 0;
                 break;
             case GameState.Wait:
                 _speed = 0;
@@ -71,8 +72,10 @@ public class Agent : MonoBehaviour
                 LeanTween.delayedCall(3f, () => _speed = speed);
                 break;
             case GameState.Win:
+                _speed = 0;
                 break;
             case GameState.Lose:
+                _speed = 0;
                 break;
         }
     }

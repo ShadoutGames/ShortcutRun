@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,19 +11,23 @@ public class Agent : MonoBehaviour
     [SerializeField]
     private bool trial;
 
+    private float _speed;
     private StateMachine stateMachine;
     private List<IState> states;
     private Rigidbody rb;
 
-    private void Start() 
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
         InitStateMachine();
+        GameManager.AfterStateChanged += OnAfterStateChanged;
+        speed = _speed;
     }
 
-    private void Update() 
+
+    private void Update()
     {
-        rb.velocity = transform.forward * speed;
+        rb.velocity = transform.forward * _speed;
         stateMachine.Tick();
     }
 
@@ -41,16 +46,34 @@ public class Agent : MonoBehaviour
         (
             runState,
             turnState,
-            ()=> trial
+            () => trial
         );
 
         stateMachine.AddTransition
         (
             turnState,
             runState,
-            ()=> !trial
+            () => !trial
         );
 
         stateMachine.SetState(runState);
+    }
+    private void OnAfterStateChanged(GameState newState)
+    {
+        switch (newState)
+        {
+            case GameState.Starting:
+                break;
+            case GameState.Wait:
+                _speed = 0;
+                break;
+            case GameState.InGame:
+                LeanTween.delayedCall(3f, () => _speed = speed);
+                break;
+            case GameState.Win:
+                break;
+            case GameState.Lose:
+                break;
+        }
     }
 }

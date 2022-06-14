@@ -1,6 +1,7 @@
 using System;
 using NoName.Utilities;
 using UnityEngine;
+using TMPro;
 
 namespace NoName
 {
@@ -18,11 +19,22 @@ namespace NoName
         private GameObject waitPanel;
 
         [SerializeField]
+        private GameObject ınGamePanel;
+
+        [SerializeField]
         private GameObject finalPanel;
+
+        [SerializeField]
+        private TextMeshProUGUI countDown;
+
+        [SerializeField]
+        private TextMeshProUGUI currentCoin;
 
         #endregion
 
         #region Variables
+
+        private float timer = 0;
 
         #endregion
 
@@ -34,13 +46,42 @@ namespace NoName
         private void Start()
         {
             GameManager.AfterStateChanged += OnAfterStateChanged;
+            ScoreManager.Instance.ScoreChanged += OnScoreChanged;
+        }
 
+
+        private void Update()
+        {
+            timer -= Time.deltaTime;
+            if (timer <= 3)
+            {
+                countDown.text = ((int)timer).ToString();
+            }
         }
 
 
         #endregion
 
         #region Methods
+
+        public void GetOnHold()
+        {
+            GameManager.Instance.ChangeGameState(GameState.Wait);
+        }
+
+        public void GetCurrenLevel()
+        {
+            //levelmanager yazılacak.
+        }
+
+        public void IncreaseWood()
+        {
+            CollectManager.Instance.Add();
+        }
+        // public void IncreaseTime()
+        // {
+        //     CollectManager.Instance.Add();
+        // }
 
         private void CloseAllPanel()
         {
@@ -61,10 +102,12 @@ namespace NoName
                 case GameState.Starting:
                     CloseAllPanel();
                     startPanel.SetActive(true);
+                    ınGamePanel.SetActive(true);
                     break;
                 case GameState.Wait:
                     startPanel.SetActive(false);
                     waitPanel.SetActive(true);
+                    timer = 3;
                     break;
                 case GameState.InGame:
                     waitPanel.SetActive(false);
@@ -76,6 +119,10 @@ namespace NoName
                     failPanel.SetActive(true);
                     break;
             }
+        }
+        private void OnScoreChanged()
+        {
+            currentCoin.text = ScoreManager.Instance.CurrentScore.ToString();
         }
 
         #endregion

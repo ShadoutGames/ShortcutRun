@@ -111,8 +111,8 @@ namespace NoName
 
         private void OnTouchPositionChanged(Touch touch)
         {
-            GameManager.Instance.ChangeGameState(GameState.InGame);
-            _transform.Rotate(Vector3.up * touch.deltaPosition.x * turnSpeed);
+            if (GameManager.Instance.State != GameState.Starting)
+                _transform.Rotate(Vector3.up * touch.deltaPosition.x * turnSpeed);
         }
 
         private void OnAfterStateChanged(GameState newState)
@@ -126,12 +126,8 @@ namespace NoName
                     currentSpeed = 0;
                     break;
                 case GameState.InGame:
-                    LeanTween.delayedCall(3f, () =>
-                    {
-                        gameObject.GetComponent<Animator>().SetTrigger("OnRun");
-                        currentSpeed = speed;
-                    });
-
+                    gameObject.GetComponent<Animator>().SetTrigger("OnRun");
+                    currentSpeed = speed;
                     break;
                 case GameState.Win:
                     break;

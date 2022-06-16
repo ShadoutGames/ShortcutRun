@@ -54,9 +54,13 @@ namespace NoName
         private void Update()
         {
             timer -= Time.deltaTime;
-            if (timer <= 3)
+            if (timer <= 3 && timer > 0)
             {
                 countDown.text = ((int)timer).ToString();
+            }
+            else if (timer <= 0 && GameManager.Instance.State == GameState.Wait)
+            {
+                GameManager.Instance.ChangeGameState(GameState.InGame);
             }
         }
 

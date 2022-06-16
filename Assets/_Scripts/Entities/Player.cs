@@ -130,10 +130,12 @@ namespace NoName
                     currentSpeed = speed;
                     break;
                 case GameState.Win:
+                    currentSpeed = 0;
+                    gameObject.GetComponent<Animator>().SetTrigger("OnStop");
                     break;
                 case GameState.Lose:
                     currentSpeed = 0;
-                    gameObject.GetComponent<Animator>().SetTrigger("OnFail");
+                    gameObject.GetComponent<Animator>().SetTrigger("OnStop");
                     break;
             }
 

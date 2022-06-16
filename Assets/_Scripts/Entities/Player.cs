@@ -133,6 +133,7 @@ namespace NoName
                     break;
                 case GameState.Lose:
                     currentSpeed = 0;
+                    gameObject.GetComponent<Animator>().SetTrigger("OnFail");
                     break;
             }
 

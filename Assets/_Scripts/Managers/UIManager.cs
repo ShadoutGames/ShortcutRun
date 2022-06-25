@@ -84,10 +84,6 @@ namespace NoName
         {
             CollectManager.Instance.Add();
         }
-        // public void IncreaseTime()
-        // {
-        //     CollectManager.Instance.Add();
-        // }
 
         private void CloseAllPanel()
         {
@@ -116,6 +112,9 @@ namespace NoName
                     timer = 3;
                     break;
                 case GameState.InGame:
+                    waitPanel.SetActive(false);
+                    break;
+                case GameState.Fınal:
                     waitPanel.SetActive(false);
                     break;
                 case GameState.Win:

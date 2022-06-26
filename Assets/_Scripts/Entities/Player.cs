@@ -14,8 +14,6 @@ namespace NoName
 
         [SerializeField]
         private float turnSpeed;
-        [SerializeField]
-        private int jumpForce;
 
         #endregion
 
@@ -77,6 +75,11 @@ namespace NoName
                 CollectManager.Instance.Add();
                 other.gameObject.SetActive(false);
             }
+            var jumpingArea = other.GetComponent<JumpArea>();
+            if (jumpingArea != null)
+            {
+                Jump();
+            }
         }
 
         #endregion
@@ -85,8 +88,20 @@ namespace NoName
 
         public void Jump()
         {
-            rb.AddForce(Vector3.up * jumpForce);
-            rb.useGravity = true;
+            Player.Instance.ChangePlayerState(PlayerState.Fly);
+            LeanTween.moveY(gameObject, 2f, .5f).setLoopPingPong(1).setOnComplete(() =>
+            {
+                var closestDistance = PathManager.Instance.Path.path.GetClosestPointOnPath(transform.position);
+                if (CollectManager.Instance.CurrentWoodCount == 0 && Vector3.Distance(transform.position, closestDistance) > PathManager.Instance.PathMesh.roadWidth)
+                {
+                    GameManager.Instance.ChangeGameState(GameState.Lose);
+                }
+                else if (CollectManager.Instance.CurrentWoodCount > 0)
+                {
+                    ChangePlayerState(PlayerState.Run);
+                }
+            });
+
         }
         public void ChangePlayerState(PlayerState newState)
         {
@@ -128,6 +143,7 @@ namespace NoName
                 case GameState.InGame:
                     gameObject.GetComponent<Animator>().SetTrigger("OnRun");
                     currentSpeed = speed;
+                    ChangePlayerState(PlayerState.Run);
                     break;
                 case GameState.Win:
                     currentSpeed = 0;

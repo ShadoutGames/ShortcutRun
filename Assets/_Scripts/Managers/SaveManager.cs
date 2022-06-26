@@ -25,6 +25,7 @@ public class SaveManager : Singleton<SaveManager>
     private void Awake()
     {
         currentLevel = PlayerPrefs.GetInt("Level");
+        Debug.Log(PlayerPrefs.GetInt("Level"));
     }
 
     private void Start()
@@ -51,6 +52,7 @@ public class SaveManager : Singleton<SaveManager>
         {
             currentLevel++;
             PlayerPrefs.SetInt("Level", currentLevel);
+            Debug.Log(currentLevel);
         }
     }
 

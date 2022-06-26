@@ -89,36 +89,25 @@ namespace NoName
             woods[currentWoodCount - 1].SetActive(false);
             currentWoodCount--;
         }
-        
+
         public void WoodAling()
         {
-            if (currentWoodCount > 0)
+            if (Player.Instance.State == PlayerState.Run)
             {
-                throwedWoods[currentWoodCount - 1].transform.position = new Vector3(Player.Instance.transform.position.x,
-                0,
-                Player.Instance.transform.position.z);
-                throwedWoods[currentWoodCount - 1].transform.rotation = Player.Instance.transform.rotation;
-                throwedWoods[currentWoodCount - 1].SetActive(true);
-                Remove();
+                if (currentWoodCount > 0)
+                {
+                    throwedWoods[currentWoodCount - 1].transform.position = new Vector3(Player.Instance.transform.position.x,
+                    0,
+                    Player.Instance.transform.position.z);
+                    throwedWoods[currentWoodCount - 1].transform.rotation = Player.Instance.transform.rotation;
+                    throwedWoods[currentWoodCount - 1].SetActive(true);
+                    Remove();
+                }
+                else if (currentWoodCount == 0)
+                {
+                    Player.Instance.Jump();
+                }
             }
-            // else if (Player.Instance.State != PlayerState.Fly)
-            // {
-            //     Player.Instance.ChangePlayerState(PlayerState.Fly);
-            //     Player.Instance.Jump();
-            //     if (Player.Instance.transform.position.y == 0)
-            //     {
-            //         Player.Instance.gameObject.GetComponent<Rigidbody>().useGravity = false;
-            //     }
-
-            // }
-            else if (currentWoodCount == 0)
-            {
-                GameManager.Instance.ChangeGameState(GameState.Lose);
-                Player.Instance.rb.isKinematic = true;
-                
-            }
-            
-
         }
 
         #endregion
